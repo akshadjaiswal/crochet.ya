@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import { Outfit, Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
 import { QueryProvider } from '@/lib/query-provider'
+import { Navbar } from '@/components/layout/navbar'
+import { Footer } from '@/components/layout/footer'
+import { Toaster } from '@/components/ui/sonner'
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -32,9 +35,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${outfit.variable} ${plusJakarta.variable} font-body antialiased`}
+        className={`${outfit.variable} ${plusJakarta.variable} font-body antialiased min-h-screen flex flex-col`}
       >
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <Navbar />
+          <div className="flex-1">{children}</div>
+          <Footer />
+          <Toaster position="bottom-right" richColors />
+        </QueryProvider>
       </body>
     </html>
   )
