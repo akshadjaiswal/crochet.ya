@@ -8,6 +8,15 @@ import { AdminPageHeader } from '@/components/admin/shared/admin-page-header'
 import { CategoryRow, type CategoryRowData } from '@/components/admin/categories/category-row'
 import { Button } from '@/components/ui/button'
 
+const DEFAULT_CATEGORIES: CategoryRowData[] = [
+  { slug: 'amigurumi', name: 'Amigurumi', description: 'Adorable stuffed friends', image: '', emoji: '🧸', sort_order: 1 },
+  { slug: 'accessories', name: 'Accessories', description: 'Scrunchies, headbands, and more', image: '', emoji: '🎀', sort_order: 2 },
+  { slug: 'home-decor', name: 'Home Decor', description: 'Cozy touches for every corner', image: '', emoji: '🏡', sort_order: 3 },
+  { slug: 'clothing', name: 'Tops & Wearables', description: 'Handknit tops, vests, and cozy layers', image: '', emoji: '👚', sort_order: 4 },
+  { slug: 'keychains', name: 'Keychains', description: 'Tiny treasures to carry everywhere', image: '', emoji: '🔑', sort_order: 5 },
+  { slug: 'custom', name: 'Custom Orders', description: "Tell us what you dream, we'll stitch it real", image: '', emoji: '✨', sort_order: 6 },
+]
+
 export default function CategoriesPage() {
   const queryClient = useQueryClient()
   const [localCategories, setLocalCategories] = useState<CategoryRowData[] | null>(null)
@@ -17,10 +26,10 @@ export default function CategoriesPage() {
     queryFn: () => fetch('/api/admin/categories').then((r) => r.json()),
   })
 
-  // Initialize local state once data loads
+  // Initialize local state once data loads; fall back to defaults if DB is empty
   useEffect(() => {
-    if (data?.categories && !localCategories) {
-      setLocalCategories(data.categories)
+    if (data && !localCategories) {
+      setLocalCategories(data.categories.length > 0 ? data.categories : DEFAULT_CATEGORIES)
     }
   }, [data, localCategories])
 

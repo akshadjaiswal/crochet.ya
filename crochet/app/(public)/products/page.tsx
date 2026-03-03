@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { PageContainer } from '@/components/layout'
 import { ProductGrid } from '@/components/product'
-import { getCategoriesWithCount, getProductsByCategory } from '@/lib/data'
+import { getCategoriesWithCount, getProductsByCategory, getAllProducts } from '@/lib/data'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 
@@ -25,6 +25,30 @@ export default async function ProductsPage() {
         products: await getProductsByCategory(cat.slug),
       }))
   )
+
+  // Fallback: if no categories seeded yet, show all products in a flat grid
+  if (categoriesWithProducts.length === 0) {
+    const allProducts = await getAllProducts()
+    return (
+      <PageContainer className="py-12">
+        <div className="text-center mb-12">
+          <h1 className="font-heading text-4xl sm:text-5xl font-bold mb-4">
+            Our Creations
+          </h1>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Each piece is handmade with care and love. Browse our full collection.
+          </p>
+        </div>
+        {allProducts.length > 0 ? (
+          <ProductGrid products={allProducts} columns={4} />
+        ) : (
+          <p className="text-center text-muted-foreground py-16">
+            No products yet. Check back soon!
+          </p>
+        )}
+      </PageContainer>
+    )
+  }
 
   return (
     <PageContainer className="py-12">
