@@ -23,6 +23,11 @@ export const metadata: Metadata = {
   },
   description:
     'Discover beautiful handmade crochet products - amigurumi, accessories, home decor and more. Each piece crafted with love.',
+  icons: {
+    icon: '/icon',
+    shortcut: '/icon',
+    apple: '/icon',
+  },
 }
 
 export default function RootLayout({
